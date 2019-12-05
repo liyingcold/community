@@ -4,6 +4,7 @@ import com.ly.community.dto.AccessTokenDTO;
 import com.ly.community.dto.GithubUser;
 import com.ly.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,14 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
 
+//    读取配置文件里面的key，并且为其赋值
+    @Value("${github.client.id}")
+    private String clientId;
+    @Value("${github.client.secret}")
+    private String clientSecret;
+    @Value("${github.redirect.url}")
+    private String redirectUri;
+
     /**
      * 登录成功后返回index页面
      * @param code 需要传递的参数
@@ -24,15 +33,15 @@ public class AuthorizeController {
      * @return
      */
     @GetMapping("/callback")
-    public String callbanck(@RequestParam(name="code")String code,
+    public String callback(@RequestParam(name="code")String code,
                             @RequestParam(name="state")String state){
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-        accessTokenDTO.setClient_id("ea4aee7585ee0e2fb430");
-        accessTokenDTO.setClient_secret("b1e1fa32038df6a5c7dce27862df60b445c46ba7");
+        accessTokenDTO.setClient_id(clientId);
+        accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirect_uri("http://localhost:8887/callback");
+        accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setState(state);
-        String accessToken=githubProvider.getAccessToken(accessTokenDTO);
+        String accessToken = githubProvider.getAccessToken(accessTokenDTO);
 //        得到user信息，
         GithubUser user=githubProvider.getUser(accessToken);
         System.out.println(user.getName());

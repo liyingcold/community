@@ -20,7 +20,7 @@ public class GithubProvider {
      * ly社区会通过https://github.com/login/oauth/access_token重新携带code，访问GitHub
      * code如果是正确的，会返回一个正确的access_token,使用信息
      * @param accessTokenDTO
-     * @return
+     * @return access_token
      */
     public String getAccessToken(AccessTokenDTO accessTokenDTO){
 
@@ -34,6 +34,8 @@ public class GithubProvider {
                 .build();
         try (Response response = client.newCall(request).execute()) {
             String string=response.body().string();
+//            string： access_token=c79df00d7bb14be67f4e4272aea0a4ee02d73c2d&scope=user&token_type=bearer
+//            进行拆分，得到access_token
             String[] split=string.split("&");
             String tokenStr=split[0].split("=")[1];
             System.out.println(string);
@@ -47,7 +49,7 @@ public class GithubProvider {
     /**
      * user携带accessToken，给GitHub，验证成功后，返回用户信息
      * @param accessToken
-     * @return
+     * @return 返回用户信息
      */
     public GithubUser getUser(String accessToken){
 //        GET请求
@@ -58,6 +60,7 @@ public class GithubProvider {
         try {
             Response response = client.newCall(request).execute();
             String string=response.body().string();
+//            将String的json对象转换为GithubUser的类对象
             GithubUser githubUser=JSON.parseObject(string,GithubUser.class);
             return githubUser;
         }catch (IOException e){
