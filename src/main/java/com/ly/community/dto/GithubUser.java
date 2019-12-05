@@ -1,11 +1,11 @@
 package com.ly.community.dto;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class GithubUser {
     private String name;
     private Long id;
