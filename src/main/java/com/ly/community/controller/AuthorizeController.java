@@ -55,7 +55,7 @@ public class AuthorizeController {
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
 //        当GitHub登录成功后，得到user信息，
         GithubUser githubUser=githubProvider.getUser(accessToken);
-        if (githubUser!= null){
+        if (githubUser!= null && githubUser.getId() !=null){
             User user = new User();
 //            用token绑定前端和后端状态
             String token = UUID.randomUUID().toString();
