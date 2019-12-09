@@ -65,6 +65,7 @@ public class AuthorizeController {
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUser.getAvatar_url());
 //            将user信息写入数据库，用token当作登录的验证
 //            每次请求时的session不同，所以我们自定义一个字段，分别存入数据库和cookie，再次访问时，就可以比较两次的token是否相同，而不用每次都需要用户登录
             userMapper.insert(user);
