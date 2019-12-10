@@ -5,6 +5,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 包裹样式和前端需要的数据
+ */
 @Data
 public class PaginationDTO {
     private List<QuestionDTO> questions;
@@ -20,24 +23,25 @@ public class PaginationDTO {
     private  Integer page;
 
     private List<Integer> pages=new ArrayList<>();
+    private Integer totalPage;
 
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
+    /**
+     *
+     * @param totalPage  总页数
+     * @param page       当前页数
+
+     */
+    public void setPagination(Integer totalPage, Integer page) {
+        this.totalPage = totalPage;
+//        为page配值
         this.page=page;
-//总页数
-        Integer totalPage =0;
-        if (totalCount % size ==0){
-            totalPage = totalCount /size;
-        }else {
-            totalPage = totalCount /size +1;
-        }
-
         pages.add(page);
-
         for (int i=1;i<=3;i++){
+//            向前展示三个页面
             if (page-i>0){
                 pages.add(0,page-i);
             }
-
+//            向后展示三个页面
             if (page+i<=totalPage){
                 pages.add(page +i);
             }
