@@ -65,7 +65,8 @@ public class QuestionService {
         Integer totalPage;
 //        首先查出totalCount
         Integer totalCount = questionMapper.countByUserId(userId);
-        if (totalCount % size ==0){
+//        totalCount如果为0，必须判断.page默认为1，如果totalPage为0，则offset会出现负数
+        if (totalCount % size ==0 && (totalCount !=0)){
             totalPage = totalCount /size;
         }else {
             totalPage = totalCount /size +1;
@@ -99,6 +100,15 @@ public class QuestionService {
 
 
         return paginationDTO;
+    }
+
+    public QuestionDTO getById(Integer id) {
+        Question question=questionMapper.getById(id);
+        QuestionDTO questionDTO=new QuestionDTO();
+        BeanUtils.copyProperties(question,questionDTO);
+        User user=userMapper.findById(question.getCreator());
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 //    当一个页面需要用到UserMapper、QuestionMapper就可以在service处理
 }

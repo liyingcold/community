@@ -1,5 +1,6 @@
 package com.ly.community.mapper;
 
+import com.ly.community.dto.QuestionDTO;
 import com.ly.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,4 +26,8 @@ public interface QuestionMapper {
 
     @Select("Select count(1) from question where creator = #{userId}")
     Integer countByUserId(@Param("userId")Integer userId);
+
+
+    @Select("select * from question where id = #{id}  ")
+    Question getById(@Param("id") Integer id);
 }
